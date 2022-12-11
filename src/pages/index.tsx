@@ -21,6 +21,8 @@ const Home: NextPage<HomeProps> = function ({ initialData }) {
     keepPreviousData: true,
     initialData: initialData,
   });
+  const posts = postsData?.posts ?? initialData?.posts ?? [];
+  const total = postsData?.total ?? 0;
 
   return (
     <>
@@ -35,15 +37,15 @@ const Home: NextPage<HomeProps> = function ({ initialData }) {
 
           {isError && <p>Something went wrong :(</p>}
 
-          {postsData?.posts && (
+          {posts && (
             <div className={classes.postsContainer}>
               <ul className={classes.postsList}>
-                {postsData?.posts?.map((post) => (
+                {posts?.map((post) => (
                   <Post key={post.id} post={post} />
                 ))}
               </ul>
 
-              <Pagination total={postsData?.total} pagination={pagination} />
+              <Pagination total={total} pagination={pagination} />
             </div>
           )}
         </div>
