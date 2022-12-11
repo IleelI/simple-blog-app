@@ -35,7 +35,7 @@ const Home: NextPage<HomeProps> = function ({ initialData }) {
 
           {isError && <p>Something went wrong :(</p>}
 
-          {!isError && postsData?.posts && (
+          {postsData?.posts && (
             <div className={classes.postsContainer}>
               <ul className={classes.postsList}>
                 {postsData?.posts?.map((post) => (
