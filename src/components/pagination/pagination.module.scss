@@ -1,0 +1,67 @@
+@import '../../styles/palette.scss';
+
+.paginationContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.pagination {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: max-content 1fr max-content;
+  gap: 2rem;
+}
+.page {
+  color: $text;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.button {
+  padding: 0.5rem 1rem;
+  color: $fg;
+  background-color: $text;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
+  &:hover {
+    background-color: lighten($text, 15);
+  }
+  &:disabled {
+    opacity: 0.38;
+    cursor: default;
+    pointer-events: none;
+  }
+}
+.paginationControls {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.controlContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.inputLabel {
+  color: $text;
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  letter-spacing: -0.3px;
+}
+.numberInput {
+  width: calc(1rem + 3ch);
+  padding: 0.25rem;
+  border-radius: 8px;
+  border: 1px solid $text;
+  color: $text;
+  background-color: $fg;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.8rem;
+  line-height: 1rem;
+}

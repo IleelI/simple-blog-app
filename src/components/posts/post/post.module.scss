@@ -55,14 +55,26 @@
   background-color: rgba($subtext, 0.75);
 }
 .postDetail {
+  display: inline-block;
   font-size: 0.85rem;
   font-weight: 400;
   color: $subtext;
 }
 .postLink {
+  border-radius: 4px;
   transition: color 0.3s ease-in-out;
   &:hover {
-    color: rgba($primary, 0.75);
+    color: $primary;
+  }
+  &:focus,
+  &:focus-within,
+  &:focus-visible {
+    color: $primary;
+    outline-offset: 2px;
+    outline: 2px solid $primary;
+  }
+  & > * {
+    outline: none;
   }
 }
 .postBody {

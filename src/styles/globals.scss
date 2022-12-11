@@ -15,6 +15,13 @@ body {
   box-sizing: border-box;
   color: $text;
 }
+*::selection {
+  background: lighten($primary, 30);
+}
+*:focus {
+  outline-offset: 2px;
+  outline: 2px solid $primary;
+}
 
 a {
   color: inherit;

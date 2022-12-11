@@ -1,6 +1,7 @@
 import type { GetPostsResponse } from 'api/posts';
 import { getPosts } from 'api/posts';
 import Layout from 'components/layout/layout';
+import Pagination from 'components/pagination/pagination';
 import Post from 'components/posts/post/post';
 import usePagination from 'hooks/usePagination';
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
@@ -12,29 +13,14 @@ const PAGE_NAME = 'Home';
 
 type HomeProps = InferGetStaticPropsType<typeof getStaticProps>;
 const Home: NextPage<HomeProps> = function ({ initialData }) {
-  const {
-    page,
-    limit,
-    isPrevPageDisabled,
-    handleGoToPage,
-    handlePrevPage,
-    handleNextPage,
-    handleLimitSet,
-  } = usePagination(1, 3);
-  const {
-    data: postsData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const pagination = usePagination(1, 3);
+  const { page, limit } = pagination;
+  const { data: postsData, isError } = useQuery({
     queryFn: () => getPosts({ page, limit }),
     queryKey: ['posts', page, limit],
     keepPreviousData: true,
     initialData: initialData,
   });
-
-  const total = postsData?.total ?? 0;
-  const totalPages = Math.ceil(total / limit);
-  const isNextPageDisabled = page >= totalPages;
 
   return (
     <>
@@ -43,7 +29,7 @@ const Home: NextPage<HomeProps> = function ({ initialData }) {
       </Head>
       <Layout>
         <div>
-          <header>
+          <header className={classes.pageTitle}>
             <h1>Here are the results</h1>
           </header>
 
@@ -57,68 +43,7 @@ const Home: NextPage<HomeProps> = function ({ initialData }) {
                 ))}
               </ul>
 
-              <div className={classes.pagination}>
-                <button
-                  type="button"
-                  className={classes.button}
-                  disabled={isPrevPageDisabled}
-                  onClick={handlePrevPage}
-                >
-                  Prev page
-                </button>
-                <p className={classes.page}>
-                  {page}/{totalPages}
-                </p>
-                <button
-                  type="button"
-                  className={classes.button}
-                  disabled={isNextPageDisabled}
-                  onClick={handleNextPage}
-                >
-                  Next page
-                </button>
-              </div>
-
-              <div className={classes.paginationControls}>
-                <div className={classes.paginationControl}>
-                  <small>Go to page:</small>
-                  <input
-                    className={classes.limitInput}
-                    defaultValue={page}
-                    onBlur={(event) => {
-                      const input = event.target as HTMLInputElement;
-                      const newPage = parseInt(input.value) || 1;
-                      handleGoToPage(newPage, totalPages);
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        const input = event.target as HTMLInputElement;
-                        const newPage = parseInt(input.value) || 1;
-                        handleGoToPage(newPage, totalPages);
-                      }
-                    }}
-                  />
-                </div>
-                <div className={classes.paginationControl}>
-                  <small>Limit per page:</small>
-                  <input
-                    className={classes.limitInput}
-                    defaultValue={limit}
-                    onBlur={(event) => {
-                      const input = event.target as HTMLInputElement;
-                      const newLimit = parseInt(input.value) || 1;
-                      handleLimitSet(newLimit);
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        const input = event.target as HTMLInputElement;
-                        const newLimit = parseInt(input.value) || 1;
-                        handleLimitSet(newLimit);
-                      }
-                    }}
-                  />
-                </div>
-              </div>
+              <Pagination total={postsData?.total} pagination={pagination} />
             </div>
           )}
         </div>

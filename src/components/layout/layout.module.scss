@@ -9,11 +9,12 @@
   width: 100%;
   height: auto;
   min-height: 100vh;
-  gap: 4rem;
+  gap: 2rem;
   background-color: $bg;
 }
 
 .contentContainer {
+  overflow: hidden;
   grid-area: content;
-  padding: 2rem 2rem 2rem 0;
+  padding: 2rem;
 }

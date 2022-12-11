@@ -2,7 +2,7 @@ import { Post } from 'api/posts';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 import { capitalizeFirstLetter } from 'utils/string';
 import classes from './post.module.scss';
 
@@ -24,6 +24,12 @@ const Post = ({ post }: PostProps) => {
     }
   };
 
+  const handleCardContentClick = (event: MouseEvent, callback?: () => void) => {
+    event.preventDefault();
+    event.stopPropagation();
+    callback?.();
+  };
+
   return (
     <li
       tabIndex={0}
@@ -37,7 +43,10 @@ const Post = ({ post }: PostProps) => {
         <div className={classes.postDetails}>
           <small className={classes.postDetail}>Reactions: {reactions}</small>
           <span className={classes.detailDivider} />
-          <small className={clsx(classes.postDetail, classes.postLink)}>
+          <small
+            onClick={handleCardContentClick}
+            className={clsx(classes.postDetail, classes.postLink)}
+          >
             <Link href="/about">See author</Link>
           </small>
         </div>

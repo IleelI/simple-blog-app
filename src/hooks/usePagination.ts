@@ -14,13 +14,22 @@ export default function usePagination(inputPage = 1, inputLimit = 10) {
   }, [isPrevPageDisabled]);
 
   const handleGoToPage = useCallback((page: number, totalPages: number) => {
-    if (page > totalPages) setPage(totalPages);
-    if (page < 1) setPage(1);
-    setPage(page);
+    if (page > totalPages) {
+      setPage(totalPages);
+    } else if (page < 1) {
+      setPage(1);
+    } else {
+      setPage(page);
+    }
   }, []);
 
   const handleLimitSet = useCallback((newLimit: number) => {
-    setLimit(newLimit);
+    if (newLimit < 0) {
+      setLimit(1);
+    } else {
+      setLimit(newLimit);
+    }
+    setPage(1);
   }, []);
 
   return {

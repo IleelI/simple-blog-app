@@ -34,16 +34,22 @@
   color: rgba($color: $text, $alpha: 0.6);
   transition: color 0.3s ease-in-out;
   &:hover {
-    color: rgba($color: $text, $alpha: 0.8);
+    color: rgba($color: $primary, $alpha: 0.8);
   }
   &:focus-within,
   &:focus-visible,
   &:focus {
-    color: rgba($color: $text, $alpha: 0.9);
+    color: $primary;
+    border-radius: 4px;
+    outline-offset: 2px;
+    outline: 2px solid $primary;
+  }
+  & > * {
+    outline: none;
   }
 }
 
 .navigationItemActive {
-  color: $text;
+  color: $primary;
   font-weight: 600;
 }

@@ -23,7 +23,7 @@ export async function getPosts({
   getAll = false,
 }): Promise<GetPostsResponse> {
   const queryParams = getAll
-    ? ''
+    ? '?limit=150'
     : `?limit=${limit}&skip=${(page - 1) * limit}`;
   const query = `${API_URL}${queryParams}`;
   try {
