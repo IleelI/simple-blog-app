@@ -30,16 +30,13 @@ const PostPage: NextPage<PostProps> = function ({ initialPost }) {
     initialData: initialPost,
   });
 
+  const paragraphedBody = getParagraphedBody(post?.body ?? '');
+
   const handleGoBackClick = () => {
     router.push('/');
   };
 
   if (!post) return <p>Nothing here</p>;
-  const { title, body, reactions, tags, userId } = post;
-  const reactionsLabel =
-    reactions > 1 ? `Reactions: ${reactions}` : 'Reaction: 1';
-  const paragraphedBody = getParagraphedBody(body);
-
   return (
     <>
       <Head>
@@ -51,19 +48,21 @@ const PostPage: NextPage<PostProps> = function ({ initialPost }) {
         {isError && <p>Something went wrong</p>}
         <div className={classes.postContainer}>
           <header className={classes.postHeader}>
-            <h1>{title}</h1>
+            <h1>{post.title}</h1>
 
             <section className={classes.postDetails}>
               <small className={classes.headerDetail}>
-                Post by: author {userId}
+                Post by: author {post.userId}
               </small>
               <div className={classes.spacer} />
-              <small className={classes.headerDetail}>{reactionsLabel}</small>
+              <small className={classes.headerDetail}>
+                Reactions: {post?.reactions ?? 0}
+              </small>
             </section>
 
-            {tags && (
+            {post.tags && (
               <ul className={classes.tagList}>
-                {tags.map((tag) => (
+                {post.tags.map((tag) => (
                   <li key={tag} className={classes.tag}>
                     {capitalizeFirstLetter(tag)}
                   </li>

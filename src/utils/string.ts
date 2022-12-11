@@ -10,10 +10,11 @@ export function getParagraphedBody(
 ) {
   // Splitting our body text by '.' delimiter,
   // removing empty sentences and appending '.' to the end of each sentence.
-  const sentences = bodyText
-    .split('.')
-    .filter((sentence) => sentence.length)
-    .map((sentence) => `${sentence.trim()}.`);
+  const sentences =
+    bodyText
+      .split('.')
+      .filter((sentence) => sentence.length)
+      .map((sentence) => `${sentence.trim()}.`) ?? [];
 
   // Creating an empty array of strings that will be populated with
   // concatted sentences in count equal to sentencesPerParagraph parameter
