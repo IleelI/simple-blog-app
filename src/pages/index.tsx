@@ -134,7 +134,7 @@ type StaticProps = {
 };
 export const getStaticProps: GetStaticProps<StaticProps> = async function () {
   try {
-    const initialData = await getPosts(1, 3);
+    const initialData = await getPosts({ page: 1, limit: 3 });
     return {
       props: {
         initialData,
