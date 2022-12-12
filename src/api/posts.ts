@@ -1,6 +1,6 @@
 const API_URL = 'https://dummyjson.com/posts';
 
-type PaginatedResponse = {
+export type PaginatedResponse = {
   limit: number;
   skip: number;
   total: number;
@@ -14,6 +14,7 @@ export type Post = {
   tags: string[];
   reactions: number;
 };
+
 export type GetPostsResponse = PaginatedResponse & {
   posts: Post[];
 };
@@ -41,5 +42,18 @@ export async function getPost(id: string) {
     return (await response.json()) as Post;
   } catch (error) {
     throw new Error('Something went wrong while fetching post');
+  }
+}
+
+export type GetPostsFromUserResponse = PaginatedResponse & {
+  posts: Post[];
+};
+export async function getPostsFromUser(userId: string) {
+  const query = `${API_URL}/user/${userId}`;
+  try {
+    const response = await fetch(query);
+    return (await response.json()) as GetPostsFromUserResponse;
+  } catch (error) {
+    throw new Error('Error while fetching data');
   }
 }

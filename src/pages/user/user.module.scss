@@ -1,0 +1,106 @@
+@import '../../styles/palette.scss';
+
+.pageTitle {
+  margin-bottom: 2rem;
+  color: $text;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 2.4rem;
+}
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  max-width: 1000px;
+}
+.content {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-auto-rows: auto;
+  grid-template-columns: minmax(max-content, 500px) max-content;
+  gap: 1rem 2rem;
+}
+.userDetails {
+  grid-column: 1/2;
+}
+.userBasicInfo {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.mainInfo {
+  color: $text;
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+}
+.secondaryInfo {
+  color: $subtext;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.2rem;
+}
+.profileImage {
+  background-color: $fg;
+  border-radius: 50px;
+  border: 1px solid $primary;
+}
+.userPosts {
+  grid-row: span 2;
+  grid-column: 2/3;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 1rem;
+  padding: 0 0.5rem 1rem 0.5rem;
+  max-height: 600px;
+  max-width: 500px;
+  overflow: hidden auto;
+}
+.postsHeading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.5rem 0;
+  color: $text;
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+  backdrop-filter: blur(5px);
+}
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.goBackButton {
+  width: max-content;
+  align-self: flex-end;
+  background-color: $fg;
+  border-radius: 6px;
+  border: 1px solid $text;
+  color: $text;
+  padding: 0.25rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out;
+  &:hover {
+    color: $fg;
+    border-color: $primary;
+    background-color: $primary;
+  }
+  &:focus {
+    color: $fg;
+    border-color: $primary;
+    background-color: $primary;
+    outline-offset: 2px;
+    outline: 2px solid $primary;
+  }
+}

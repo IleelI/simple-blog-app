@@ -3,39 +3,28 @@ import { getPosts } from 'api/posts';
 import Layout from 'components/layout/layout';
 import Pagination from 'components/pagination/pagination';
 import Post from 'components/posts/post/post';
-import usePagination from 'hooks/usePagination';
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
-import { useQuery } from 'react-query';
 import classes from './home.module.scss';
+import useHome from './useHome';
 
 const PAGE_NAME = 'Home';
 
 type HomeProps = InferGetStaticPropsType<typeof getStaticProps>;
-const Home: NextPage<HomeProps> = function ({ initialData }) {
-  const pagination = usePagination(1, 3);
-  const { page, limit } = pagination;
-  const { data: postsData, isError } = useQuery({
-    queryFn: () => getPosts({ page, limit }),
-    queryKey: ['posts', page, limit],
-    keepPreviousData: true,
-    initialData: initialData,
-  });
-  const posts = postsData?.posts ?? initialData?.posts ?? [];
-  const total = postsData?.total ?? 0;
+const Home: NextPage<HomeProps> = function ({ posts: postsData }) {
+  const { posts, pagination, total } = useHome({ postsData });
 
   return (
     <>
       <Head>
         <title>{PAGE_NAME}</title>
       </Head>
+
       <Layout>
-        <div>
+        <div className={classes.contentContainer}>
           <header className={classes.pageTitle}>
             <h1>Here are the results</h1>
           </header>
-
-          {isError && <p>Something went wrong :(</p>}
 
           {posts && (
             <div className={classes.postsContainer}>
@@ -57,20 +46,20 @@ const Home: NextPage<HomeProps> = function ({ initialData }) {
 export default Home;
 
 type StaticProps = {
-  initialData: GetPostsResponse | null;
+  posts: GetPostsResponse | null;
 };
 export const getStaticProps: GetStaticProps<StaticProps> = async function () {
   try {
-    const initialData = await getPosts({ page: 1, limit: 3 });
+    const posts = await getPosts({ getAll: true });
     return {
       props: {
-        initialData,
+        posts,
       },
     };
   } catch (error) {
     return {
       props: {
-        initialData: null,
+        posts: null,
       },
     };
   }

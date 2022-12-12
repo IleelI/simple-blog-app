@@ -9,34 +9,23 @@ import type {
   NextPage,
 } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { ParsedUrlQuery } from 'querystring';
-import { Fragment } from 'react';
-import { useQuery } from 'react-query';
 import { capitalizeFirstLetter, getParagraphedBody } from 'utils/string';
 import classes from './post.module.scss';
 
 type PostProps = InferGetStaticPropsType<typeof getStaticProps>;
-const PostPage: NextPage<PostProps> = function ({ initialPost }) {
+const PostPage: NextPage<PostProps> = function ({ post }) {
   const router = useRouter();
-  const { id } = router.query as PostQuery;
-  const {
-    data: post,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryFn: () => getPost(id ?? '1'),
-    queryKey: ['post', id],
-    initialData: initialPost,
-  });
+
+  const handleGoBackClick = () => {
+    router.back();
+  };
 
   const paragraphedBody = getParagraphedBody(post?.body ?? '');
 
-  const handleGoBackClick = () => {
-    router.push('/');
-  };
-
-  if (!post) return <p>Nothing here</p>;
+  if (!post) return <p>Something went wrong</p>;
   return (
     <>
       <Head>
@@ -44,15 +33,15 @@ const PostPage: NextPage<PostProps> = function ({ initialPost }) {
       </Head>
 
       <Layout>
-        {isLoading && <p>Loading...</p>}
-        {isError && <p>Something went wrong</p>}
         <div className={classes.postContainer}>
           <header className={classes.postHeader}>
             <h1>{post.title}</h1>
 
             <section className={classes.postDetails}>
               <small className={classes.headerDetail}>
-                Post by: author {post.userId}
+                <Link href={`/user/${post.userId}`}>
+                  Post by: author {post.userId}
+                </Link>
               </small>
               <div className={classes.spacer} />
               <small className={classes.headerDetail}>
@@ -93,7 +82,7 @@ const PostPage: NextPage<PostProps> = function ({ initialPost }) {
 export default PostPage;
 
 export type PostQuery = ParsedUrlQuery & {
-  id?: string;
+  id: string;
 };
 export const getStaticPaths: GetStaticPaths<PostQuery> = async function () {
   try {
@@ -101,7 +90,7 @@ export const getStaticPaths: GetStaticPaths<PostQuery> = async function () {
     const postPaths: GetStaticPathsResult<PostQuery>['paths'] =
       postsData.posts?.map(({ id }) => ({
         params: {
-          id: String(id ?? '0'),
+          id: String(id ?? '1'),
         },
       }));
 
@@ -118,7 +107,7 @@ export const getStaticPaths: GetStaticPaths<PostQuery> = async function () {
 };
 
 export type StaticProps = {
-  initialPost: Post | null;
+  post: Post | null;
 };
 export const getStaticProps: GetStaticProps<StaticProps, PostQuery> =
   async function (context) {
@@ -127,13 +116,13 @@ export const getStaticProps: GetStaticProps<StaticProps, PostQuery> =
       const postData = await getPost(id);
       return {
         props: {
-          initialPost: postData,
+          post: postData,
         },
       };
     } catch (error) {
       return {
         props: {
-          initialPost: null,
+          post: null,
         },
       };
     }

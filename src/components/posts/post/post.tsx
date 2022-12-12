@@ -8,10 +8,11 @@ import classes from './post.module.scss';
 
 type PostProps = {
   post: Post;
+  simplified?: boolean;
 };
-const Post = ({ post }: PostProps) => {
+const Post = ({ post, simplified = false }: PostProps) => {
   const { push } = useRouter();
-  const { id, title, body, reactions, tags } = post;
+  const { id, title, body, reactions, tags, userId } = post;
 
   const handleGoToPostPage = () => {
     push(`/post/${id}`);
@@ -34,7 +35,7 @@ const Post = ({ post }: PostProps) => {
     <li
       tabIndex={0}
       role="button"
-      className={classes.post}
+      className={clsx(classes.post, simplified && classes.postSimplified)}
       onClick={handleGoToPostPage}
       onKeyDown={handleKeyboardGoToPostPage}
     >
@@ -47,14 +48,14 @@ const Post = ({ post }: PostProps) => {
             onClick={handleCardContentClick}
             className={clsx(classes.postDetail, classes.postLink)}
           >
-            <Link href="/about">See author</Link>
+            <Link href={`/user/${userId}`}>See author</Link>
           </small>
         </div>
       </header>
 
-      <p className={classes.postBody}>{body}</p>
+      {!simplified && <p className={classes.postBody}>{body}</p>}
 
-      {tags && (
+      {!simplified && tags && (
         <ul className={classes.tagList}>
           {tags.map((tag) => (
             <li key={tag} className={classes.tag}>
