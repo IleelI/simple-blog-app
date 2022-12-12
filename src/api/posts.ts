@@ -1,3 +1,4 @@
+import { sleep } from 'react-query/types/core/utils';
 const API_URL = 'https://dummyjson.com/posts';
 
 export type PaginatedResponse = {
@@ -28,6 +29,7 @@ export async function getPosts({
     : `?limit=${limit}&skip=${(page - 1) * limit}`;
   const query = `${API_URL}${queryParams}`;
   try {
+    await sleep(1000);
     const response = await fetch(query);
     return (await response.json()) as GetPostsResponse;
   } catch (error) {
@@ -38,6 +40,7 @@ export async function getPosts({
 export async function getPost(id: string) {
   const query = `${API_URL}/${id}`;
   try {
+    await sleep(1000);
     const response = await fetch(query);
     return (await response.json()) as Post;
   } catch (error) {
@@ -51,6 +54,7 @@ export type GetPostsFromUserResponse = PaginatedResponse & {
 export async function getPostsFromUser(userId: string) {
   const query = `${API_URL}/user/${userId}`;
   try {
+    await sleep(1000);
     const response = await fetch(query);
     return (await response.json()) as GetPostsFromUserResponse;
   } catch (error) {

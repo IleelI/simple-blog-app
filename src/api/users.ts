@@ -1,3 +1,4 @@
+import { sleep } from 'react-query/types/core/utils';
 import type { PaginatedResponse } from './posts';
 
 const API_URL = 'https://dummyjson.com/users';
@@ -87,6 +88,7 @@ export async function getUsers({
 export async function getUser(id: string) {
   const query = `${API_URL}/${id}`;
   try {
+    await sleep(1000);
     const data = await fetch(query);
     return (await data.json()) as User;
   } catch (error) {
