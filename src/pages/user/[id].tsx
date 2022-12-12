@@ -28,13 +28,12 @@ const Profile: NextPage<ProfileProps> = ({ user, userPosts }) => {
     router.back();
   };
 
+  console.log(user, userPosts);
   if (!user) return <h2>No user found</h2>;
   return (
     <>
       <Head>
-        <title>
-          {PAGE_NAME} - {user.username}
-        </title>
+        <title>{PAGE_NAME}</title>
       </Head>
 
       <Layout>

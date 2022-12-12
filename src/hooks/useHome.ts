@@ -1,4 +1,4 @@
-import type { GetPostsResponse } from './../api/posts';
+import type { GetPostsResponse } from '../api/posts';
 import usePagination from 'hooks/usePagination';
 
 type UseHomeParams = {

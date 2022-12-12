@@ -6,7 +6,7 @@ import Post from 'components/posts/post/post';
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
 import classes from './home.module.scss';
-import useHome from './useHome';
+import useHome from '../hooks/useHome';
 
 const PAGE_NAME = 'Home';
 
