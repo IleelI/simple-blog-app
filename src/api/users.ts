@@ -1,4 +1,4 @@
-import { sleep } from 'react-query/types/core/utils';
+import { sleep } from 'utils/promises';
 import type { PaginatedResponse } from './posts';
 
 const API_URL = 'https://dummyjson.com/users';
