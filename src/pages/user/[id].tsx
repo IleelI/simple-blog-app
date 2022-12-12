@@ -67,11 +67,13 @@ const Profile: NextPage<ProfileProps> = ({ user, userPosts }) => {
             <div className={classes.userPosts}>
               <h1 className={classes.postsHeading}>User posts:</h1>
 
-              <ul className={classes.posts}>
-                {userPosts?.posts.map((post) => (
-                  <Post key={post.id} post={post} simplified />
-                ))}
-              </ul>
+              {userPosts?.posts && (
+                <ul className={classes.posts}>
+                  {userPosts.posts.map((post) => (
+                    <Post key={post.id} post={post} simplified />
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
 
