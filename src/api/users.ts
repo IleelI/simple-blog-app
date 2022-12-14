@@ -78,7 +78,7 @@ export async function getUsers({
     : `?limit=${limit}&skip=${(page - 1) * limit}`;
   const query = `${API_URL}${queryParams}`;
   try {
-    await sleep(250);
+    await sleep(3000);
     const response = await fetch(query);
     return (await response.json()) as GetUsersResponse;
   } catch (error) {
@@ -89,7 +89,7 @@ export async function getUsers({
 export async function getUser(id: string) {
   const query = `${API_URL}/${id}`;
   try {
-    await sleep(250);
+    await sleep(3000);
     const data = await fetch(query);
     return (await data.json()) as UserType;
   } catch (error) {
