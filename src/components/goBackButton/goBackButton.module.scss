@@ -1,0 +1,29 @@
+@import '../../styles/palette.scss';
+
+.goBackButton {
+  width: max-content;
+  align-self: flex-end;
+  background-color: $fg;
+  border-radius: 6px;
+  border: 1px solid $text;
+  color: $text;
+  padding: 0.25rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out;
+  &:hover {
+    color: $fg;
+    border-color: $primary;
+    background-color: $primary;
+  }
+  &:focus {
+    color: $fg;
+    border-color: $primary;
+    background-color: $primary;
+    outline-offset: 2px;
+    outline: 2px solid $primary;
+  }
+}

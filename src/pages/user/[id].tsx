@@ -1,10 +1,11 @@
 import type { GetPostsFromUserResponse } from 'api/posts';
 import { getPostsFromUser } from 'api/posts';
-import type { User } from 'api/users';
+import type { UserType } from 'api/users';
 import { getUser } from 'api/users';
 import { getUsers } from 'api/users';
+import GoBackButton from 'components/goBackButton/goBackButton';
 import Layout from 'components/layout/layout';
-import Post from 'components/posts/post/post';
+import Post from 'components/postsPage/post/post';
 import type {
   GetStaticPaths,
   GetStaticPathsResult,
@@ -14,7 +15,6 @@ import type {
 } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import type { ParsedUrlQuery } from 'querystring';
 import { capitalizeFirstLetter } from 'utils/string';
 import classes from './user.module.scss';
@@ -22,13 +22,6 @@ import classes from './user.module.scss';
 const PAGE_NAME = 'Profile';
 type ProfileProps = InferGetStaticPropsType<typeof getStaticProps>;
 const Profile: NextPage<ProfileProps> = ({ user, userPosts }) => {
-  const router = useRouter();
-
-  const handleGoBackClick = () => {
-    router.back();
-  };
-
-  console.log(user, userPosts);
   if (!user) return <h2>No user found</h2>;
   return (
     <>
@@ -43,28 +36,28 @@ const Profile: NextPage<ProfileProps> = ({ user, userPosts }) => {
 
         <div className={classes.contentContainer}>
           <div className={classes.content}>
-            <div className={classes.userDetails}>
-              <div className={classes.userBasicInfo}>
-                <Image
-                  width={100}
-                  height={100}
-                  src={user.image}
-                  className={classes.profileImage}
-                  alt={`${user.username} image`}
-                />
-                <div className={classes.userInfo}>
-                  <p className={classes.mainInfo}>
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <p className={classes.secondaryInfo}>
-                    {capitalizeFirstLetter(user.gender)} ({user.age})
-                  </p>
-                </div>
+            <div className={classes.userBasicInfo}>
+              <Image
+                width={100}
+                height={100}
+                src={user.image}
+                className={classes.profileImage}
+                alt={`${user.username} image`}
+              />
+              <div className={classes.userInfo}>
+                <p className={classes.mainInfo}>
+                  {user.firstName} {user.lastName}
+                </p>
+                <p className={classes.secondaryInfo}>
+                  {capitalizeFirstLetter(user.gender)} ({user.age})
+                </p>
               </div>
             </div>
 
             <div className={classes.userPosts}>
-              <h1 className={classes.postsHeading}>User posts:</h1>
+              <h1 className={classes.postsHeading}>
+                User posts({userPosts?.posts?.length ?? 0}):
+              </h1>
 
               {userPosts?.posts && (
                 <ul className={classes.posts}>
@@ -76,13 +69,7 @@ const Profile: NextPage<ProfileProps> = ({ user, userPosts }) => {
             </div>
           </div>
 
-          <button
-            type="button"
-            className={classes.goBackButton}
-            onClick={handleGoBackClick}
-          >
-            Go back
-          </button>
+          <GoBackButton />
         </div>
       </Layout>
     </>
@@ -116,7 +103,7 @@ export const getStaticPaths: GetStaticPaths = async function () {
 };
 
 type StaticProps = {
-  user: User | null;
+  user: UserType | null;
   userPosts: GetPostsFromUserResponse | null;
 };
 export const getStaticProps: GetStaticProps<StaticProps, UserQuery> =

@@ -1,35 +1,22 @@
-import { Post } from 'api/posts';
+import type { PostType } from 'api/posts';
 import clsx from 'clsx';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import type { KeyboardEvent, MouseEvent } from 'react';
-import { capitalizeFirstLetter } from 'utils/string';
+import BaseLink from 'components/baseLink/baseLink';
+import Tag from 'components/tag/tag';
 import classes from './post.module.scss';
+import usePost from './usePost';
 
 type PostProps = {
-  post: Post;
+  post: PostType;
   simplified?: boolean;
 };
 const Post = ({ post, simplified = false }: PostProps) => {
-  const { push } = useRouter();
   const { id, title, body, reactions, tags, userId } = post;
-
-  const handleGoToPostPage = () => {
-    push(`/post/${id}`);
-  };
-
-  const handleKeyboardGoToPostPage = (event: KeyboardEvent<HTMLLIElement>) => {
-    const keyCode = event.code;
-    if (['Enter', 'Space'].includes(keyCode)) {
-      handleGoToPostPage();
-    }
-  };
-
-  const handleCardContentClick = (event: MouseEvent, callback?: () => void) => {
-    event.preventDefault();
-    event.stopPropagation();
-    callback?.();
-  };
+  const {
+    handleGoToPostPage,
+    handleKeyboardGoToPostPage,
+    handleCardContentClick,
+    handleCardContentKeyboardPress,
+  } = usePost(id);
 
   return (
     <li
@@ -44,12 +31,14 @@ const Post = ({ post, simplified = false }: PostProps) => {
         <div className={classes.postDetails}>
           <small className={classes.postDetail}>Reactions: {reactions}</small>
           <span className={classes.detailDivider} />
-          <small
+          <span
             onClick={handleCardContentClick}
-            className={clsx(classes.postDetail, classes.postLink)}
+            onKeyDown={handleCardContentKeyboardPress}
           >
-            <Link href={`/user/${userId}`}>See author</Link>
-          </small>
+            <BaseLink to={`/user/${userId}`} classes={classes.postDetail}>
+              See author
+            </BaseLink>
+          </span>
         </div>
       </header>
 
@@ -58,9 +47,7 @@ const Post = ({ post, simplified = false }: PostProps) => {
       {!simplified && tags && (
         <ul className={classes.tagList}>
           {tags.map((tag) => (
-            <li key={tag} className={classes.tag}>
-              {capitalizeFirstLetter(tag)}
-            </li>
+            <Tag key={tag} tag={tag} />
           ))}
         </ul>
       )}

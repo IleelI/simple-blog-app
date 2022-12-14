@@ -1,12 +1,11 @@
 import type { GetPostsResponse } from 'api/posts';
 import { getPosts } from 'api/posts';
 import Layout from 'components/layout/layout';
-import Pagination from 'components/pagination/pagination';
-import Post from 'components/posts/post/post';
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
 import classes from './home.module.scss';
 import useHome from '../hooks/useHome';
+import PostList from 'components/postsPage/postList/postList';
 
 const PAGE_NAME = 'Home';
 
@@ -27,15 +26,7 @@ const Home: NextPage<HomeProps> = function ({ posts: postsData }) {
           </header>
 
           {posts && (
-            <div className={classes.postsContainer}>
-              <ul className={classes.postsList}>
-                {posts?.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
-              </ul>
-
-              <Pagination total={total} pagination={pagination} />
-            </div>
+            <PostList posts={posts} total={total} pagination={pagination} />
           )}
         </div>
       </Layout>

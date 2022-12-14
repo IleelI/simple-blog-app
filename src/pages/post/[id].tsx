@@ -1,6 +1,11 @@
-import type { Post } from 'api/posts';
+import type { PostType } from 'api/posts';
 import { getPost, getPosts } from 'api/posts';
+import type { UserType } from 'api/users';
+import { getUser } from 'api/users';
+import GoBackButton from 'components/goBackButton/goBackButton';
 import Layout from 'components/layout/layout';
+import PostBody from 'components/postPage/postBody/postBody';
+import PostHeader from 'components/postPage/postHeader/postHeader';
 import type {
   GetStaticPaths,
   GetStaticPathsResult,
@@ -9,23 +14,13 @@ import type {
   NextPage,
 } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import type { ParsedUrlQuery } from 'querystring';
-import { capitalizeFirstLetter, getParagraphedBody } from 'utils/string';
 import classes from './post.module.scss';
 
 type PostProps = InferGetStaticPropsType<typeof getStaticProps>;
-const PostPage: NextPage<PostProps> = function ({ post }) {
-  const router = useRouter();
+const PostPage: NextPage<PostProps> = function ({ post, user }) {
+  if (!post || !user) return <p>Something went wrong</p>;
 
-  const handleGoBackClick = () => {
-    router.back();
-  };
-
-  const paragraphedBody = getParagraphedBody(post?.body ?? '');
-
-  if (!post) return <p>Something went wrong</p>;
   return (
     <>
       <Head>
@@ -34,51 +29,16 @@ const PostPage: NextPage<PostProps> = function ({ post }) {
 
       <Layout>
         <div className={classes.postContainer}>
-          <header className={classes.postHeader}>
-            <h1>{post.title}</h1>
+          <PostHeader post={post} user={user} />
 
-            <section className={classes.postDetails}>
-              <small className={classes.headerDetail}>
-                <Link href={`/user/${post.userId}`}>
-                  Post by: author {post.userId}
-                </Link>
-              </small>
-              <div className={classes.spacer} />
-              <small className={classes.headerDetail}>
-                Reactions: {post?.reactions ?? 0}
-              </small>
-            </section>
+          <PostBody body={post.body} />
 
-            {post.tags && (
-              <ul className={classes.tagList}>
-                {post.tags.map((tag) => (
-                  <li key={tag} className={classes.tag}>
-                    {capitalizeFirstLetter(tag)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </header>
-
-          <section className={classes.postBody}>
-            {paragraphedBody.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </section>
-
-          <button
-            type="button"
-            className={classes.goBackButton}
-            onClick={handleGoBackClick}
-          >
-            Go back
-          </button>
+          <GoBackButton />
         </div>
       </Layout>
     </>
   );
 };
-
 export default PostPage;
 
 export type PostQuery = ParsedUrlQuery & {
@@ -107,22 +67,26 @@ export const getStaticPaths: GetStaticPaths<PostQuery> = async function () {
 };
 
 export type StaticProps = {
-  post: Post | null;
+  post: PostType | null;
+  user: UserType | null;
 };
 export const getStaticProps: GetStaticProps<StaticProps, PostQuery> =
   async function (context) {
     try {
       const id = context.params?.id || '1';
       const postData = await getPost(id);
+      const userData = await getUser(String(postData.userId));
       return {
         props: {
           post: postData,
+          user: userData,
         },
       };
     } catch (error) {
       return {
         props: {
           post: null,
+          user: null,
         },
       };
     }

@@ -1,0 +1,18 @@
+@import '../../../styles/palette.scss';
+
+.postBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: $fg;
+  border-radius: 8px;
+  box-shadow: 2px 0px 24px 0px rgba(20, 20, 20, 0.04);
+  & > p {
+    color: $text;
+    line-height: 1.5;
+    font-weight: 400;
+    font-size: 1.125rem;
+    letter-spacing: -0.5px;
+  }
+}

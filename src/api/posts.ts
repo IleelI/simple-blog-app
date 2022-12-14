@@ -8,7 +8,7 @@ export type PaginatedResponse = {
   total: number;
 };
 
-export type Post = {
+export type PostType = {
   id: number;
   title: string;
   body: string;
@@ -18,7 +18,7 @@ export type Post = {
 };
 
 export type GetPostsResponse = PaginatedResponse & {
-  posts: Post[];
+  posts: PostType[];
 };
 export async function getPosts({
   page = 1,
@@ -30,7 +30,7 @@ export async function getPosts({
     : `?limit=${limit}&skip=${(page - 1) * limit}`;
   const query = `${API_URL}${queryParams}`;
   try {
-    await sleep(1000);
+    await sleep(250);
     const response = await fetch(query);
     return (await response.json()) as GetPostsResponse;
   } catch (error) {
@@ -41,21 +41,21 @@ export async function getPosts({
 export async function getPost(id: string) {
   const query = `${API_URL}/${id}`;
   try {
-    await sleep(1000);
+    await sleep(250);
     const response = await fetch(query);
-    return (await response.json()) as Post;
+    return (await response.json()) as PostType;
   } catch (error) {
     throw new Error('Something went wrong while fetching post');
   }
 }
 
 export type GetPostsFromUserResponse = PaginatedResponse & {
-  posts: Post[];
+  posts: PostType[];
 };
 export async function getPostsFromUser(userId: string) {
   const query = `${API_URL}/user/${userId}`;
   try {
-    await sleep(1000);
+    await sleep(250);
     const response = await fetch(query);
     return (await response.json()) as GetPostsFromUserResponse;
   } catch (error) {

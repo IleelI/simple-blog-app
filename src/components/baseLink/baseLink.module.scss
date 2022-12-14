@@ -1,0 +1,19 @@
+@import '../../styles/palette.scss';
+
+.link {
+  border-radius: 4px;
+  transition: color 0.3s ease-in-out;
+  &:hover {
+    color: $primary;
+  }
+  &:focus,
+  &:focus-within,
+  &:focus-visible {
+    color: $primary;
+    outline-offset: 2px;
+    outline: 2px solid $primary;
+  }
+  & > * {
+    outline: none;
+  }
+}

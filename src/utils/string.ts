@@ -28,9 +28,9 @@ export function getParagraphedBody(
       const end = (index + 1) * sentencesPerParagraph;
       return sentenceIndex >= start && sentenceIndex < end;
     });
-    const paragraph = paragraphSentences
-      .reduce((prev, curr) => `${prev}${curr} `, '')
-      .trim();
+    const paragraph = capitalizeFirstLetter(
+      paragraphSentences.reduce((prev, curr) => `${prev}${curr} `, '').trim()
+    );
     return paragraph;
   });
 

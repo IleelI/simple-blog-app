@@ -13,14 +13,6 @@ const navigationItems: NavigationItem[] = [
     label: 'home',
     path: '/',
   },
-  {
-    label: 'profile',
-    path: '/profile',
-  },
-  {
-    label: 'about',
-    path: '/about',
-  },
 ];
 
 const Navigation = () => {

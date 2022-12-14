@@ -3,7 +3,7 @@ import type { PaginatedResponse } from './posts';
 
 const API_URL = 'https://dummyjson.com/users';
 
-export type User = {
+export type UserType = {
   id: number;
   firstName: string;
   lastName: string;
@@ -66,7 +66,7 @@ export type User = {
 };
 
 export type GetUsersResponse = PaginatedResponse & {
-  users: User[];
+  users: UserType[];
 };
 export async function getUsers({
   page = 1,
@@ -78,6 +78,7 @@ export async function getUsers({
     : `?limit=${limit}&skip=${(page - 1) * limit}`;
   const query = `${API_URL}${queryParams}`;
   try {
+    await sleep(250);
     const response = await fetch(query);
     return (await response.json()) as GetUsersResponse;
   } catch (error) {
@@ -88,9 +89,9 @@ export async function getUsers({
 export async function getUser(id: string) {
   const query = `${API_URL}/${id}`;
   try {
-    await sleep(1000);
+    await sleep(250);
     const data = await fetch(query);
-    return (await data.json()) as User;
+    return (await data.json()) as UserType;
   } catch (error) {
     throw new Error('Error while fetching data');
   }
