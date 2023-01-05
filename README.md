@@ -5,6 +5,7 @@ The data used here comes from [Dummy JSON](https://dummyjson.com/), i truly have
 
 ## Tech used 🔌
 * Next.js
+* Typescript
 * TailwindCSS
 * Create T3 App
 * Vercel
